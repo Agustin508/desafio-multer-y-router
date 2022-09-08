@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "auricular",
+        "price" : 600
+    },
+    {
+        "id": 2,
+        "name": "mouse",
+        "price" : 200
+    },
+    {
+        "id": 3,
+        "name": "teclado",
+        "price" : 700
+    },
+    {
+        "id": 4,
+        "name": "monitor",
+        "price" : 900
+    }
+]
