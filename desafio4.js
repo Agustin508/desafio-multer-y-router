@@ -1,49 +1,77 @@
-const fs = require("fs");
+const fs = require ("fs")
 
 class Contenedor {
-    constructor(archivo) {
-        this.archivo = archivo;
+    constructor (archivo){
+        this.archivo = archivo
     }
+ 
+async save(producto){
+    try {
 
-
-async save(obj){
-    const data = await fs.promises.readFile(this.archivo, "utf-8")
-    const objetos = JSON.parse(data)
-    const id = objetos.length + 1
-    obj.id = id;
-    objetos.push(obj);
-    const objetosString = JSON.stringify(objetos)
-    await fs.promises.writeFile(this.archivo, objetosString)
-    return objetos
-}
-
-async getAll() {
-    const data = await fs.promises.readFile(this.archivo, "utf-8")
-    return JSON.parse(data);
-
-}
-
-async getObjById(id) {
-    const data = await fs.promises.readFile(this.archivo, "utf-8");
-    const objetos = JSON.parse(data);
-    const objetoId = objetos.filter ((objeto) => objeto.id !== id);
-    const objeto = objetos.find((objeto) => objeto.id == id);
-    if(objeto) {
-        console.log("se elimino el id");
-        const updatedFile = JSON.stringify(objetoId, null, "");
-        fs.promises.writeFile(this.archivo, updatedFile);
-    }else{
-        console.log("no se encontro el id")
+        const data = await fs.promises.readFile(`${this.archivo}`,"utf-8")   
+        const objetos = JSON.parse(data)  
+        const id = objetos.length + 1
+        producto.id = id
+        objetos.push(producto)
+        const productosString = JSON.stringify(objetos)
+        await fs.promises.writeFile(`${this.archivo}`,productosString)
+        console.log("Se guardo el objeto")
+        console.log(objetos)
     }
-}
-
-deleteAll() {
-    fs.writeFileSync(this.archivo, "[]");
-    console.log("se borro todo");
-    return "[]";
+    catch (err){
+        console.log("No se pudo guardar archivo")
+    }
     
+
 }
-updateById(id, objetoNuevo) {
+async getById(id){
+        const data = await fs.promises.readFile(`${this.archivo}`,"utf-8")   
+        const objetos = JSON.parse(data)
+        const objeto= objetos.find((objeto) => objeto.id == id )
+        if (objeto){
+            return (objeto)
+        }else{
+            throw new Error ("Producto no encontrado!!")
+        }
+  
+  }
+   async getAll(){
+    try{
+        const data= await fs.promises.readFile(`${this.archivo}`, "utf-8")
+        const objetos = JSON.parse(data)
+        return objetos
+    }catch(err){
+        console.log("No se consiguio info")
+    }
+
+  }
+async deleteById(id){
+    try{
+
+        const data = await fs.promises.readFile(`${this.archivo}`,"utf-8")   
+        const parse = JSON.parse(data)
+        const filtro= parse.filter((objeto) => objeto.id !== id )
+        const string = JSON.stringify(filtro)
+        fs.promises.writeFile(`${this.archivo}`,string)
+        console.log(filtro)
+    }catch(err){
+        console.log("No se encontro ID")
+    }
+  }
+  async deleteAll(){
+      try{
+
+          await fs.promises.writeFile(`${this.archivo}`,JSON.stringify([]))
+          const data = await fs.promises.readFile(`${this.archivo}`,"utf-8") 
+          console.log("Archivo vaciado") 
+          console.log(data)
+        }catch(err){
+            console.log("No se pudo vaciar el archivo")
+        }
+      
+  }
+
+  updateById(id, objetoNuevo) {
     const data = fs.readFileSync(this.archivo, "utf-8");
     let dataParseada = JSON.parse(data);
     let productoViejo = dataParseada.find((objeto) => objeto.id === id);
@@ -57,19 +85,7 @@ updateById(id, objetoNuevo) {
     fs.writeFileSync(this.archivo, JSON.stringify(productosFiltrados, null, 2));
     return mensaje;
   }
-
+ 
 }
 
-async function start(){
-//const db = new Contenedor("data");
-//db.save({nombre:"eduardo"});
-//const all = await db.getAll();
-//console.log(all);
-//const objeto = await db.getObjById(5);
-//console.log(objeto)
-//await db.deleteAll()
-}
-
-start();
-
-module.exports = Contenedor;
+module.exports = Contenedor
