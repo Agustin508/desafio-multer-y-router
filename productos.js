@@ -2,9 +2,8 @@ const express = require("express")
 const {Router}= express
 const router = Router()
 const contenedor = require("./desafio4")
-const cont = new contenedor("./products.json") 
+const cont = new contenedor("./productos.json") 
  
-
 router.get("/", async (req,res)=>{
    
     const data = await cont.getAll()
@@ -24,9 +23,13 @@ router.get("/:id",async (req,res)=>{
   
 
 router.post("/", async (req,res)=>{
-    const {title,price}= req.body
-    await cont.save({title,price})
-    res.send({error:false,msg:"Producto cargado"})
+  try{
+    const data= req.body
+    await cont.save(data)
+    res.redirect("/");
+    }catch(err){
+      res.status(404).send(err);
+    }
     
   })
   

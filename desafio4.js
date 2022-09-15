@@ -7,7 +7,6 @@ class Contenedor {
  
 async save(producto){
     try {
-
         const data = await fs.promises.readFile(`${this.archivo}`,"utf-8")   
         const objetos = JSON.parse(data)  
         const id = objetos.length + 1
@@ -35,15 +34,10 @@ async getById(id){
         }
   
   }
-   async getAll(){
-    try{
-        const data= await fs.promises.readFile(`${this.archivo}`, "utf-8")
-        const objetos = JSON.parse(data)
-        return objetos
-    }catch(err){
-        console.log("No se consiguio info")
-    }
-
+  getAll() {
+    const data = fs.readFileSync(this.archivo, "utf-8");
+    const dataParseada = JSON.parse(data);
+    return dataParseada;
   }
 async deleteById(id){
     try{
@@ -88,4 +82,4 @@ async deleteById(id){
  
 }
 
-module.exports = Contenedor
+module.exports = Contenedor;
