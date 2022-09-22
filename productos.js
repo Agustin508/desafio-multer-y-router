@@ -4,22 +4,22 @@ const router = Router()
 const contenedor = require("./desafio4")
 const cont = new contenedor("./productos.json") 
  
-router.get("/", async (req,res)=>{
-   
-    const data = await cont.getAll()
-    console.log(data)
-    res.send(data)
-  })
+router.get("/", (req, res) => {
+  try {
+    res.send(cont.getAll());
+  } catch (err) {
+    res.status(404).send(err);
+  }
+});
 
-router.get("/:id",async (req,res)=>{
-    const {id} = req.params
-    try {
-        const data = await cont.getById(id)
-        res.send(data)
-    }catch(e){
-        res.status(404).send({error:true, msj: e.message})
-    }    
-  })
+router.get("/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    res.send(cont.getById(parseInt(id)));
+  } catch (err) {
+    res.status(404).send(err);
+  }
+});
   
 
 router.post("/", async (req,res)=>{

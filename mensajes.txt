@@ -1,0 +1,1 @@
+[{"email":"bienvenida@chat.com","msg":"Bienvenido al chat","date":"01/01/2022 00:00:00"},{"email":"ivanagustiniag@hotmail.com","msg":"hola","date":"21/9/2022 22:30:22"}]
